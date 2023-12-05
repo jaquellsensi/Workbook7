@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>ToDo Page</h2>
+
+    <!-- Input box and button -->
+    <label for="todoId">Enter ToDo ID:</label>
+    <input type="text" id="todoId" placeholder="Enter ToDo ID">
+    <button onclick="fetchToDo()">Get ToDo</button>
+
+    <!-- Div to hold message text -->
+    <div id="todoInfo"></div>
+
+    <script>
+        // Function to handle the click event
+        function fetchToDo() {
+            // Get the user-entered ToDo ID
+            const todoId = document.getElementById('todoId').value;
+
+            // Check if ToDo ID is provided
+            if (todoId.trim() === '') {
+                document.getElementById('todoInfo').innerHTML = 'Please enter a ToDo ID.';
+                return;
+            }
+
+            // Replace the placeholder URL with your actual REST API URL
+            const apiUrl = `https://jsonplaceholder.typicode.com/todos/1${todoId}`;
+
+            // Fetch data from the API
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Display ToDo information in the div below the button
+                    document.getElementById('todoInfo').innerHTML = `
+                        <p><strong>Title:</strong> ${data.title}</p>
+                        <p><strong>Completed:</strong> ${data.completed ? 'Yes' : 'No'}</p>
+                    `;
+                })
+                .catch(error => {
+                    // Display error message if API call fails
+                    document.getElementById('todoInfo').innerHTML = 'Error fetching ToDo information.';
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+
+</body>
+</html>
